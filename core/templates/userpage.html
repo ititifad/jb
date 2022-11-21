@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+
+<div class="container">
+    <!-- {% for message in messages %}
+        <p id="messages">{{message}}</p>
+    {% endfor %} -->
+    </div>
+    <br>
+    <div class="container-fluid">
+        
+    
+        <!-- Page Heading -->
+
+    
+        <!-- Content Row -->
+        <div class="row">
+    
+            <!-- Earnings (Monthly) Card Example -->
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                    </div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{member_name}}</div>
+                            </div>
+                            <div class="col-auto">
+                                <!-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+
+    
+            <!-- Earnings (Monthly) Card Example -->
+            <div class="col-xl-6 col-md-6 mb-4">
+                <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Fee Paid
+                                </div>
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col-auto">
+                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Tsh {{ paid_fees|intcomma}}</div>
+                                    </div>
+                                    <!-- <div class="col">
+                                        <div class="progress progress-sm mr-2">
+                                            <div class="progress-bar bg-info" role="progressbar"
+                                                style="width: 50%" aria-valuenow="50" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <div class="col-auto">
+                                <!-- <i class="fas fa-clipboard-list fa-2x text-gray-300"></i> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Pending Requests Card Example -->
+            <!-- <div class="col-xl-3 col-md-6 mb-4">
+                <div class="card border-left-warning shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                    Remaining Fee</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">Tsh {{  balance_fees|intcomma }}</div>
+                            </div>
+                            <div class="col-auto"> -->
+                                <!-- <i class="fas fa-comments fa-2x text-gray-300"></i> -->
+                            <!-- </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+    <hr>
+        <!-- Content Row -->
+    </div>
+    <div class="container">
+        <h2 style="text-align: center;" class="font-weight-bold">Fees Records</h2>
+    <br>
+    
+    <div class="row">
+        <div class="col-lg-12">
+        <div class="card shadow mb-4">
+        <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered text-dark" id="dataTable" width="100%" cellspacing="0">
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Fee Type</th>
+                    <th>Total Payment</th>
+                    <th>Date Paid</th>
+                </tr>
+    
+                {% for customer in payments %}
+    
+                <tr>
+                    <article class="media content-section">
+                        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+                        <div class="media-body">
+                            <td>{{customer.id}}</td>
+                    
+                            <td>{{customer.member}}</td>
+                            <td>{{customer.feetype}}</td>
+                            <td>{{customer.payment|intcomma}}</td>
+                            <td>{{customer.created_at|date}}</td>
+                </tr>
+                {% endfor %}
+    
+            </table>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+    <br>
+    <hr>
+    
+    
+    
+    <!--
+    
+    <br>
+    <div class="row">
+        <div class="col">
+            <div class="card card-body">
+                <form method="get">
+                  {{myFilter.form}}
+                <button class="btn btn-primary" type="submit">Search</button>
+              </form>
+            </div>
+        </div>
+        
+    </div>-->
+    
+    
+    
+        <!--  -->
+
+
+{% endblock %}

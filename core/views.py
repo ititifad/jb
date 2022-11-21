@@ -4,12 +4,14 @@ from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages #import messages
+from .decorators import allowed_users, admin_only
 # Create your views here.
 
 def is_valid_queryparam(param):
     return param != '' and param is not None
 
-@login_required
+@login_required(login_url='login')
+@admin_only
 def home(request):
     members = Member.objects.all()
     member_contains_query = request.GET.get('member_contains')
@@ -57,6 +59,8 @@ def home(request):
     }
     return render(request, 'home.html', context)
 
+@login_required(login_url='login')
+@admin_only
 def member(request, pk):
     member = Member.objects.get(id=pk)
     payments = Payment.objects.all()
@@ -68,6 +72,8 @@ def member(request, pk):
 
     return render(request, 'member_detail.html', context)
 
+@login_required(login_url='login')
+@admin_only
 def members(request):
     members = Member.objects.all()
     
@@ -77,6 +83,8 @@ def members(request):
 
     return render(request, 'members.html', context)
 
+@login_required(login_url='login')
+@admin_only
 def payment(request):
     payments = Payment.objects.filter(paid=True)
     
@@ -86,6 +94,8 @@ def payment(request):
 
     return render(request, 'payments.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin','member'])
 def timetable(request):
     timetables = Timetable.objects.all()
     
@@ -95,6 +105,8 @@ def timetable(request):
 
     return render(request, 'timetables.html', context)
 
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin','member'])
 def meeting(request):
     meetings = DepartmentMeeting.objects.all()
     
@@ -127,15 +139,25 @@ def Logout(request):
     logout(request)
     return redirect('login')
 
-@login_required
-def profile(request):
-    profile = request.user
-    form = UserUpdateForm(instance=profile)
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['member'])
+def UserPage(request):
+    payments = request.user.member.member_fee.all()
+
+    paid_fees = payments.aggregate(total_paid_fees=Sum('payment'))['total_paid_fees']
+
+    member_name = request.user.member
+
+
     
-    if request.method == 'POST':
-        form = UserUpdateForm(request.POST ,request.FILES, instance=profile)
-        if form.is_valid():
-            form.save()
+    context={
+        'payments': payments,
+        'paid_fees':paid_fees,
+        'member_name':member_name
+
+
             
-    context={'form': form}
-    return render(request, 'profile.html')
+            }
+    
+    return render(request, 'userpage.html', context)

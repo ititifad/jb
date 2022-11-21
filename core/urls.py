@@ -9,6 +9,7 @@ urlpatterns = [
     path('meetings/', views.meeting, name='meetings'),
     path('login/', views.user_login, name='login'),
     path('logout/', views.Logout, name='logout'),
-    path('profile/', views.profile, name='user-profile'),
+
+    path('userpage/', views.UserPage, name='user-page'),
     path('member/<str:pk>/', views.member, name='member_detail'),
 ]
