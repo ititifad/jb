@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary text-center">Member Payments Information</h6>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Fee Type</th>
+                    <th>Total Payment</th>
+                    <th>Date Paid</th>
+                    
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Fee Type</th>
+                    <th>Total Payment</th>
+                    <th>Date Paid</th>
+                    
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for customer in payments %}
+                <tr>
+                    <td>{{customer.id}}</td>
+                    
+                    <td><a href="{{customer.get_absolute_url}}">{{customer.member}}</a></td>
+                    <td>{{customer.feetype}}</td>
+                    <td>{{customer.payment|intcomma}}</td>
+                    <td>{{customer.created_at|date}}</td>
+                    
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}

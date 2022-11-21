@@ -1,0 +1,110 @@
+{%  extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+
+	<br>
+	<div class="container">
+		{% for message in messages %}
+		<p id="messages">{{message}}</p>
+		{% endfor %}			
+<div class="row">
+
+	<div class="col-md">
+		<div class="card card-body">
+			<strong><p>Taarifa Binafsi</p></strong>
+            <p>Jina: {{ member }}</p>
+            <p>Simu: {{member.simu}}</p>
+            <p>Mahali: {{member.mahali_kuzaliwa}}</p>
+            <p>Tarehe Kuzaliwa: {{member.tarehe_kuzaliwa}}</p>
+            <p>Ameoa/Kuolewa: {{member.ameoa_ameolewa}}</p>
+            <p>Ameajiriwa: {{member.ameajiriwa}}</p>
+			
+			<!-- <a class="btn btn-outline-info  btn-sm btn-block" href="">Add payment</a> -->
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<div class="card card-body">
+			<strong><p>Ubatizo</p></strong>
+			<p>Tarehe Ubatizo: {{member.tarehe_ubaatizo }}</p>
+            <p>Mahali: {{member.mahali_ubatizo }}</p>
+            <p>Maji Mengi: {{member.maji_mengi }}</p>
+		</div>
+	</div>
+	
+	<div class="col-md">
+		<div class="card card-body">
+			<strong><p>Uokovu</p></strong>
+			<p>Kumpokea yesu: {{ member.kumpokea_yesu }}</p>
+            <p>Dhehebu: {{ member.dhehebu }}</p>
+            <p>Dhehebu Alilookolea: {{ member.dhehebu_alilookolea }}</p>
+            <p>Roho Mtakatifu: {{ member.trh_kujazwa_roho_mtakatifu }}</p>
+            <p>Mahali: {{ member.mahali_roho_mtakatifu }}</p>
+            <p>Huduma: {{ member.huduma }}</p>
+
+		</div>
+	</div>
+<div class="col-md">
+	<div class="card card-body">
+		<h6>Jumla Michango</h6>
+		<hr>
+		<p>Tsh: {{ member.get_total_paid_fee|intcomma }}</h5>
+	</div>
+</div>
+
+</div>
+
+
+<br>
+
+<div class="row">
+	<div class="col-lg-12">
+	<div class="card shadow mb-4">
+		<div class="card-body">
+		<div class="table-responsive">
+		  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+				<tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Date Paid</th>
+                    <th scope="col">Payment Phase</th>
+                    <th scope="col">Amount Paid</th>
+         
+                    <!-- <th scope="col">Update</th> -->
+				</tr>
+
+				{% for payment in member.member_fee.all %}
+
+				<tr>
+                    <article class="media content-section">
+                        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+                        <div class="media-body">
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ payment.created_at|date:"F d, Y" }}</td>
+                        <td>{{ payment.feetype|capfirst }}</td>
+                        <td> Tshs. {{ payment.payment|intcomma }}</td>
+       
+				</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+		</div>
+	</div>
+</div>
+	</div>
+	</div>
+
+</div>
+<br>
+<hr>
+
+
+	</div>
+	</div>
+</div>
+</body>
+</html>			
+
+{% endblock %}

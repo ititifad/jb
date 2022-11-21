@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary text-center">Ratiba Za Ibada</h6>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Day</th>
+                    
+                    
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Description</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Day</th>
+                    
+                    
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for timetable in timetables %}
+                <tr>
+                    <td>{{timetable.id}}</td>
+                    
+                    <td>{{timetable.description}}</td>
+                    <td>{{timetable.start_time}}</td>
+                    <td>{{timetable.end_time}}</td>
+                    <td>{{timetable.day}}</td>
+                    
+                    
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}

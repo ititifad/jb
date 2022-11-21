@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block content %}
+
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary text-center">Ratiba ya Idara</h6>
+    </div>
+</div>
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered text-center" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Department</th>
+                    <th>Sub Department</th>
+                    <th>Description</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Day</th>
+                    
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>ID</th>
+                    <th>Department</th>
+                    <th>Sub Department</th>
+                    <th>Description</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Day</th>
+                    
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for meeting in meetings %}
+                <tr>
+                    <td>{{meeting.id}}</td>
+                    
+                    <td>{{meeting.department}}</td>
+                    <td>{{meeting.sub_department}}</td>
+                    <td>{{meeting.description}}</td>
+                    <td>{{meeting.start_time}}</td>
+                    <td>{{meeting.end_time}}</td>
+                    <td>{{meeting.day}}</td>
+                    
+                </tr>
+                {% endfor %}
+        </table>
+    </div>
+</div>
+
+{% endblock %}
