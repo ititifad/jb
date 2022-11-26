@@ -1,10 +1,9 @@
 {%  extends 'base.html' %}
 {% load humanize %}
 {% block content %}
-
-
-	<br>
+<img class="rounded-circle article-img" src="{{member.image.url}}" width="70px">
 	<div class="container">
+
 		{% for message in messages %}
 		<p id="messages">{{message}}</p>
 		{% endfor %}			
