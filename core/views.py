@@ -46,7 +46,7 @@ def home(request):
     elif not_paid_all == 'on':
         qs = qs.filter(paid=False)
     
-    total_members = qs.count()
+    total_members = members.count()
     total_payments = qs.aggregate(sum=Sum('payment'))['sum']
     
     context = {
