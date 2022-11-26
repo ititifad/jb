@@ -16,7 +16,7 @@ def home(request):
     members = Member.objects.all()
     member_contains_query = request.GET.get('member_contains')
     qs = Payment.objects.filter(paid=True)
-    feetypes = FeeType.objects.all()
+    feetypes = Offering.objects.all()
     date_min = request.GET.get('date_min')
     date_max = request.GET.get('date_max')
     member = request.GET.get('member')

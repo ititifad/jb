@@ -17,7 +17,7 @@ class Member(models.Model):
     kumpokea_yesu = models.DateField()
     mahali_anakotoka = models.CharField(max_length=200, help_text='mahali alikompokea yesu')
     dhehebu = models.CharField(max_length=200)
-    dhehebu_alilookolea = models.CharField(max_length=200)
+    dhehebu_alikookokea = models.CharField(max_length=200)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics', null=True, blank=True)
     tarehe_ubaatizo = models.DateField()
     mahali_ubatizo = models.CharField(max_length=200)
@@ -25,6 +25,7 @@ class Member(models.Model):
     trh_kujazwa_roho_mtakatifu  = models.DateField()
     mahali_roho_mtakatifu = models.CharField(max_length=200, default='Geita')
     huduma_aliyonayo = models.CharField(max_length=200)
+    namba_ya_zaka = models.CharField(max_length=200, blank=True)
     anatoa_zaka = models.BooleanField(default=False)
     ameajiriwa = models.BooleanField(default=False)
     ameoa_ameolewa = models.BooleanField(default=False)
@@ -45,7 +46,7 @@ class Member(models.Model):
     def get_absolute_url(self):
         return reverse("member_detail", kwargs={"pk": self.pk})
 
-class FeeType(models.Model):
+class Offering(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     
@@ -59,7 +60,7 @@ class Payment(models.Model):
     member = models.ForeignKey(Member, related_name='member_fee', on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     payment = models.DecimalField(decimal_places=2, max_digits=12)
-    feetype =  models.ForeignKey(FeeType, on_delete=models.SET_NULL, null=True)
+    feetype =  models.ForeignKey(Offering, on_delete=models.SET_NULL, null=True)
     paid = models.BooleanField(default=False)
     
     def __str__(self):

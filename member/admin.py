@@ -2,7 +2,7 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(Member)
-admin.site.register(FeeType)
+admin.site.register(Offering)
 admin.site.register(Payment)
 admin.site.register(Day)
 admin.site.register(Timetable)
