@@ -13,6 +13,7 @@ django-humanize==0.1.2
 django-import-export==2.5.0
 django-pwa==1.0.10
 django-rosetta==0.9.3
+django-storages==1.13.1
 django-utils-six==2.0
 django-xhtml2pdf==0.0.4
 et-xmlfile==1.1.0
