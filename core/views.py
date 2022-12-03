@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages #import messages
 from .decorators import allowed_users, admin_only
+from django.db.models import Q
 # Create your views here.
 
 def is_valid_queryparam(param):
@@ -75,7 +76,9 @@ def member(request, pk):
 @login_required(login_url='login')
 @admin_only
 def members(request):
-    members = Member.objects.all()
+    query = request.GET.get('query', '')
+    members = Member.objects.filter(Q(name__icontains=query) | Q(namba_ya_zaka__icontains=query)).order_by('-created_at')
+    # members = Member.objects.all()
     
     context = {
         'members': members,
