@@ -8,6 +8,24 @@ class Member(models.Model):
         ('Kiume', 'Kiume'),
         ('Kike', 'Kike')
     )
+
+    AJIRA = (
+        ('Ameajiriwa', 'Ameajiriwa'),
+        ('Amejiajiri', 'Amejiajiri'),
+        ('Hana Kazi', 'Hana Kazi'),
+    )
+
+    MAHUSIANO = (
+        ('Ameoa', 'Ameoa'),
+        ('Ameolewa', 'Ameolewa'),
+        ('Hajaolewa', 'Hajaolewa'),
+        ('Hajaoa', 'Hajaoa')
+    )
+
+    UBAATIZO = (
+        ('Maji Mengi', 'Maji Mengi'),
+        ('Maji Kidogo', 'Maji Kidogo')
+    )
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     tarehe_kuzaliwa = models.DateField()
@@ -21,14 +39,14 @@ class Member(models.Model):
     image = models.ImageField(default='default.jpg', upload_to='profile_pics', null=True, blank=True)
     tarehe_ubaatizo = models.DateField()
     mahali_ubatizo = models.CharField(max_length=200)
-    maji_mengi = models.BooleanField(default=False)
+    maji_mengi = models.CharField(max_length=200, choices=UBAATIZO)
     trh_kujazwa_roho_mtakatifu  = models.DateField()
     mahali_roho_mtakatifu = models.CharField(max_length=200, default='Geita')
     huduma_aliyonayo = models.CharField(max_length=200)
     namba_ya_zaka = models.CharField(max_length=200, blank=True)
     anatoa_zaka = models.BooleanField(default=False)
-    ameajiriwa = models.BooleanField(default=False)
-    ameoa_ameolewa = models.BooleanField(default=False)
+    ameajiriwa = models.CharField(max_length=200, choices=AJIRA)
+    ameoa_ameolewa = models.CharField(max_length=200, choices=MAHUSIANO)
     created_at = models.DateTimeField(auto_now_add=True)
     
     
