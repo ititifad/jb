@@ -26,6 +26,13 @@ class Member(models.Model):
         ('Maji Mengi', 'Maji Mengi'),
         ('Maji Kidogo', 'Maji Kidogo')
     )
+
+    
+    ZAKA = (
+        ('Anatoa Zaka', 'Anatoa Zaka'),
+        ('Hatoi Zaka', 'Hatoi Zaka')
+    )
+
     user = models.OneToOneField(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     tarehe_kuzaliwa = models.DateField()
@@ -44,7 +51,7 @@ class Member(models.Model):
     mahali_roho_mtakatifu = models.CharField(max_length=200, default='Geita')
     huduma_aliyonayo = models.CharField(max_length=200)
     namba_ya_zaka = models.CharField(max_length=200, blank=True)
-    anatoa_zaka = models.BooleanField(default=False)
+    anatoa_zaka = models.CharField(max_length=200, choices=ZAKA)
     ameajiriwa = models.CharField(max_length=200, choices=AJIRA)
     ameoa_ameolewa = models.CharField(max_length=200, choices=MAHUSIANO)
     created_at = models.DateTimeField(auto_now_add=True)
