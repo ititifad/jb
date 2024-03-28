@@ -154,7 +154,6 @@ def Logout(request):
     logout(request)
     return redirect('login')
 
-
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['member'])
 def UserPage(request):
