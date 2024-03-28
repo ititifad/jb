@@ -1,111 +1,159 @@
 {%  extends 'base.html' %}
 {% load humanize %}
 {% block content %}
+<!-- Font Awesome -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+  href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+  rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.min.css"
+  rel="stylesheet"
+/>
 <img class="rounded-circle article-img" src="{{member.image.url}}" width="70px">
-<br>
-	<div class="container">
 
-		{% for message in messages %}
-		<p id="messages">{{message}}</p>
-		{% endfor %}			
-<div class="row">
 
-	<div class="col-md">
-		<div class="card card-body">
-			<strong><p>Taarifa Binafsi</p></strong>
-            <p>Jina: {{ member }}</p>
-            <p>Simu: {{member.simu}}</p>
-            <p>Mahali: {{member.mahali_kuzaliwa}}</p>
-            <p>Tarehe Kuzaliwa: {{member.tarehe_kuzaliwa}}</p>
-            <p>Ameoa/Kuolewa: {{member.ameoa_ameolewa}}</p>
-            <p>Ameajiriwa: {{member.ameajiriwa}}</p>
-			<p>No: Zaka: {{member.namba_ya_zaka}}</p>
-			
-			<!-- <a class="btn btn-outline-info  btn-sm btn-block" href="">Add payment</a> -->
+<div class="container">
+	<h3 class="mb-4 text-center">Member Detail - {{ member.name }}</h1>
+		<!-- Content Row -->
+<div class="row justify-content-center ">
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                           Total Zaka</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_zaka_payment|intcomma}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-users fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-		</div>
-	</div>
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                            Total Offerings</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">TZS {{total_amount_all_offerings|intcomma}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-	<div class="col-md">
-		<div class="card card-body">
-			<strong><p>Ubatizo</p></strong>
-			<p>Tarehe Ubatizo: {{member.tarehe_ubaatizo }}</p>
-            <p>Mahali: {{member.mahali_ubatizo }}</p>
-            <p>Maji Mengi: {{member.maji_mengi }}</p>
-		</div>
-	</div>
+    <!-- Earnings (Monthly) Card Example -->
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-info shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                            Total Offerings</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">TZS {{total_amount_all_offerings|intcomma}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+            <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                        <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                           Total Remaining</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{total_remaining_all_offerings|intcomma}}</div>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-street-view fa-2x text-gray-300"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+	<!-- Tabs for offerings -->
 	
-	<div class="col-md">
-		<div class="card card-body">
-			<strong><p>Uokovu</p></strong>
-			<p>Kumpokea yesu: {{ member.kumpokea_yesu }}</p>
-            <p>Dhehebu: {{ member.dhehebu }}</p>
-            <p>Dhehebu Alikookokea: {{ member.dhehebu_alikookokea }}</p>
-            <p>Roho Mtakatifu: {{ member.trh_kujazwa_roho_mtakatifu }}</p>
-            <p>Mahali: {{ member.mahali_roho_mtakatifu }}</p>
-            <p>Huduma: {{ member.huduma_aliyonayo }}</p>
-
-		</div>
-	</div>
-<div class="col-md">
-	<div class="card card-body">
-		<h6>Jumla Michango</h6>
-		<hr>
-		<p>Tsh: {{ member.get_total_paid_fee|intcomma }}</h5>
-	</div>
-</div>
-
-</div>
-
-
-<br>
-
-<div class="row">
-	<div class="col-lg-12">
-	<div class="card shadow mb-4">
-		<div class="card-body">
-		<div class="table-responsive">
-		  <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-				<tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Date Paid</th>
-                    <th scope="col">Offering</th>
-                    <th scope="col">Amount Paid</th>
-         
-                    <!-- <th scope="col">Update</th> -->
-				</tr>
-
-				{% for payment in member.member_fee.all %}
-
-				<tr>
-                    <article class="media content-section">
-                        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
-                        <div class="media-body">
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td>{{ payment.created_at|date:"F d, Y" }}</td>
-                        <td>{{ payment.feetype|capfirst }}</td>
-                        <td> Tshs. {{ payment.payment|intcomma }}</td>
-       
-				</tr>
-				{% endfor %}
-
+	<ul class="nav nav-tabs nav-justified mb-3">
+		{% for offering in offerings %}
+			<li class="nav-item">
+				<a class="nav-link" href="#{{ offering.id }}" onclick="openTab(event, '{{ offering.id }}')">{{ offering.name }}</a>
+			</li>
+		{% endfor %}
+	</ul>
+	
+	<!-- Content for each offering -->
+	{% for offering in offerings %}
+		<div id="{{ offering.id }}" class="tab-pane">
+			<h2>{{ offering.name }}</h2>
+			<p>Description: {{ offering.description }}</p>
+			<p>Total Payment: {{ offering.total_paid }}</p>
+			<p>Remaining Amount: {{ offering.remaining_amount }}</p>
+			
+			<!-- Payment table for the offering -->
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th>Date</th>
+						<th>Amount</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for payment in offering.payments.all %}
+						<tr>
+							<td>{{ payment.created_at }}</td>
+							<td>{{ payment.payment }}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
 			</table>
 		</div>
-		</div>
-	</div>
+	{% endfor %}
 </div>
-	</div>
-	</div>
-
-</div>
-<br>
-<hr>
 
 
-	</div>
-	</div>
-</div>
-</body>
-</html>			
 
+<script>
+	function openTab(event, tabId) {
+		// Hide all tab content
+		var tabContents = document.getElementsByClassName('tab-pane');
+		for (var i = 0; i < tabContents.length; i++) {
+			tabContents[i].style.display = 'none';
+		}
+		
+		// Show the selected tab content
+		var selectedTab = document.getElementById(tabId);
+		selectedTab.style.display = 'block';
+	}
+</script>
+<!-- MDB -->
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.2.0/mdb.umd.min.js"
+></script>
 {% endblock %}

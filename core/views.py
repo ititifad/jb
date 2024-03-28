@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from member.models import *
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
@@ -14,19 +14,19 @@ def is_valid_queryparam(param):
 @login_required(login_url='login')
 @admin_only
 def home(request):
-    members = Member.objects.all()
+    
     member_contains_query = request.GET.get('member_contains')
-    qs = Payment.objects.filter(paid=True)
+    qs = Member.objects.all()
     feetypes = Offering.objects.all()
     date_min = request.GET.get('date_min')
     date_max = request.GET.get('date_max')
-    member = request.GET.get('member')
+    name = request.GET.get('name')
     feetype = request.GET.get('feetype')
     paid_all = request.GET.get('paid_all')
     not_paid_all = request.GET.get('not_paid_all')
     
     if is_valid_queryparam(member_contains_query):
-        qs = qs.filter(member__name__icontains=member_contains_query)
+        qs = qs.filter(name__icontains=member_contains_query)
     
     if is_valid_queryparam(date_min):
         qs = qs.filter(created_at__gte=date_min)
@@ -38,8 +38,8 @@ def home(request):
         qs= qs.filter(feetype__name=feetype)
         
         
-    if is_valid_queryparam(member) and member != 'Choose...':
-        qs= qs.filter(member__name=member)
+    if is_valid_queryparam(name) and name != 'Choose...':
+        qs= qs.filter(name=name)
         
     if paid_all == 'on':
         qs = qs.filter(paid=True)
@@ -47,8 +47,9 @@ def home(request):
     elif not_paid_all == 'on':
         qs = qs.filter(paid=False)
     
-    total_members = members.count()
-    total_payments = qs.aggregate(sum=Sum('payment'))['sum']
+    total_members = qs.count()
+    total_payments = Payment.objects.aggregate(sum=Sum('payment'))['sum']
+    total_zaka = Zaka.objects.aggregate(sum=Sum('payment'))['sum']
     
     context = {
         'qs': qs,
@@ -57,20 +58,31 @@ def home(request):
         'feetype':feetype,
         'total_members': total_members,
         'total_payments': total_payments,
+        'total_zaka':total_zaka
     }
     return render(request, 'home.html', context)
 
 @login_required(login_url='login')
 @admin_only
 def member(request, pk):
-    member = Member.objects.get(id=pk)
-    payments = Payment.objects.all()
+    member = get_object_or_404(Member,id=pk)
+    offerings = member.offerings.all()
+    # Calculate total amount, total payments, and total remaining for all offerings
+    total_amount_all_offerings = sum(offerings.values_list('amount', flat=True))
+    total_payments_all_offerings = sum(payment.payment for payment in Payment.objects.filter(offering__in=offerings))
+    total_remaining_all_offerings = total_amount_all_offerings - total_payments_all_offerings
+    total_zaka_payment = Zaka.objects.filter(member=member).aggregate(total_payment=models.Sum('payment'))['total_payment'] or 0
     
+
     context = {
         'member': member,
-        'payments': payments,
+        'offerings': offerings,
+        'total_amount_all_offerings': total_amount_all_offerings,
+        'total_payments_all_offerings': total_payments_all_offerings,
+        'total_remaining_all_offerings': total_remaining_all_offerings,
+        'total_zaka_payment':total_zaka_payment,
+        
     }
-
     return render(request, 'member_detail.html', context)
 
 @login_required(login_url='login')
@@ -146,21 +158,61 @@ def Logout(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['member'])
 def UserPage(request):
-    payments = request.user.member.member_fee.all()
+    member = request.user.member  # Assuming the user has a OneToOneField to the Member model
+    offerings = Offering.objects.filter(member=member)
+    total_zaka_payment = Zaka.objects.filter(member=member).aggregate(total_zaka=Sum('payment'))['total_zaka'] or 0
 
-    paid_fees = payments.aggregate(total_paid_fees=Sum('payment'))['total_paid_fees']
+    # Calculate overall total offering amount, total payment, and total remaining
+    overall_total_amount = offerings.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    overall_total_payment = Payment.objects.filter(offering__member=member).aggregate(total_payment=Sum('payment'))['total_payment'] or 0
+    overall_total_remaining = overall_total_amount - overall_total_payment
+    payments = Payment.objects.filter(offering__member=member)
 
-    member_name = request.user.member
-
-
+    context = {
+        'member': member,
+        'offerings': offerings,
+        'total_zaka_payment':total_zaka_payment,
+        'overall_total_amount': overall_total_amount,
+        'overall_total_payment': overall_total_payment,
+        'overall_total_remaining': overall_total_remaining,
+        'payments':payments
+    }
+    # Calculate total zaka payment for the member
     
-    context={
-        'payments': payments,
-        'paid_fees':paid_fees,
-        'member_name':member_name
 
-
-            
-            }
-    
     return render(request, 'userpage.html', context)
+
+@login_required(login_url='login')
+@admin_only
+def report(request):
+    # Calculate total amount, total payments, and total remaining for all offerings
+    total_amount_all_offerings = Offering.objects.aggregate(total_amount=Sum('amount'))['total_amount'] or 0
+    total_payments_all_offerings = Payment.objects.aggregate(total_payment=Sum('payment'))['total_payment'] or 0
+    total_remaining_all_offerings = total_amount_all_offerings - total_payments_all_offerings
+
+    # Calculate total zaka payment for all members
+    total_zaka_payment = Zaka.objects.aggregate(total_payment=Sum('payment'))['total_payment'] or 0
+
+    # Calculate total remaining for each offering for all members
+    total_remaining_per_offering = {}
+    offerings = Offering.objects.all()
+    for offering in offerings:
+        total_remaining_per_offering[offering] = offering.amount - offering.payments.aggregate(total_payment=Sum('payment'))['total_payment'] or 0
+
+    # Calculate total amount, total payments, and total remaining for each offering
+    offerings_totals = []
+    for offering in offerings:
+        total_amount = offering.amount
+        total_payments = offering.payments.aggregate(total_payment=Sum('payment'))['total_payment'] or 0
+        total_remaining = total_amount - total_payments
+        offerings_totals.append((offering, total_amount, total_payments, total_remaining))
+
+    context = {
+        'total_amount_all_offerings': total_amount_all_offerings,
+        'total_payments_all_offerings': total_payments_all_offerings,
+        'total_remaining_all_offerings': total_remaining_all_offerings,
+        'total_zaka_payment': total_zaka_payment,
+        'total_remaining_per_offering': total_remaining_per_offering,
+        'offerings_totals': offerings_totals,
+    }
+    return render(request, 'report.html', context)

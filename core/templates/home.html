@@ -4,7 +4,7 @@
 {% block content %}
 
 <h2>Welcome to EAGT - KISIWA CHA UZIMA NYANKUMBU - GEITA</h1>
-
+    <a href="{% url 'admin:index' %}" class="btn btn-primary mb-2">Go to Admin</a>
 
 <!-- Content Row -->
 <div class="row justify-content-center ">
@@ -33,7 +33,7 @@
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Total Payments</div>
+                            Total Offerings</div>
                         <div class="h5 mb-0 font-weight-bold text-gray-800">TZS {{total_payments|intcomma}}</div>
                     </div>
                     <div class="col-auto">
@@ -50,11 +50,11 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Streets
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Zaka
                         </div>
                         <div class="row no-gutters align-items-center">
                             <div class="col-auto">
-                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{total_streets}}</div>
+                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{total_zaka|intcomma}}</div>
                             </div>
                             <div class="col">
                                 <div class="">
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-street-view fa-2x text-gray-300"></i>
+                        <i class="fas fa-money-bill-wave fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
@@ -134,21 +134,21 @@
         <form method="GET" action=".">
             <div class="form-row">
                 <div class="form-group col-12">
-        <div class="form-row">
-        <div class="form-group col-md-4">
-          <label for="category">Fee Type</label>
-          <select id="feetype" class="form-control" name="feetype">
-            <option selected>Choose...</option>
-            {% for cls in feetypes %}
-            <option value="{{ cls }}">{{ cls }}</option>
-            {% endfor %}
-          </select>
-        </div>
-        <div class="form-group col-md-4">
+                    <div class="input-group">
+                        <input class="form-control py-2 border-right-0 border" type="search" name="member_contains" placeholder="Title contains..." />
+                        <span class="input-group-append">
+                            <div class="input-group-text bg-transparent">
+                                <i class="fa fa-search"></i>
+                            </div>
+                        </span>
+                    </div>
+                </div>        
+          
+        <!-- <div class="form-group col-md-4">
             <label for="category">Members</label>
             <select id="member" class="form-control" name="member">
               <option selected>Choose...</option>
-              {% for cls in members %}
+              {% for cls in qs %}
               <option value="{{ cls }}">{{ cls }}</option>
               {% endfor %}
             </select>
@@ -161,13 +161,13 @@
             </div>
           </div>
         
-          <!-- Pending Requests Card Example -->
+          
           <div class="col-xl-3 col-md-6 mb-4">
             <div class="form-row">
               <label for="publishDateMin">Minimum Date</label>
               <input type="date" class="form-control" id="publishDateMin" name="date_min">
             </div>
-          </div>
+          </div> -->
 
       <!-- <div class="form-group col-md-4">
         <div class="form-check">
@@ -193,7 +193,7 @@
 </main>
 <div class="card shadow mb-4">
     <div class="card-header py-3">
-        <h6 class="m-0 font-weight-bold text-primary text-center">Member Payments Information</h6>
+        <h6 class="m-0 font-weight-bold text-primary text-center">Church Members</h6>
     </div>
 </div>
 <div class="card-body">
@@ -203,9 +203,11 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Fee Type</th>
-                    <th>Total Payment</th>
-                    <th>Date Paid</th>
+                    <th>Phone Number</th>
+                    <th>Place of Birth</th>
+                    <th>Gender</th>
+                    
+                    <th>View Details</th>
                     
                 </tr>
             </thead>
@@ -213,22 +215,25 @@
                 <tr>
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Fee Type</th>
-                    <th>Total Payment</th>
-                    <th>Date Paid</th>
+                    <th>Phone Number</th>
+                    <th>Place of Birth</th>
+                    <th>Gender</th>
+                    
+                    <th>View Details</th>
                     
                 </tr>
             </tfoot>
             <tbody>
-                {% for customer in qs %}
+                {% for member in qs %}
                 <tr>
-                    <td>{{customer.id}}</td>
+                    <td>{{member.id}}</td>
                     
-                    <td><a href="{{customer.get_absolute_url}}">{{customer.member}}</a></td>
-                    <td>{{customer.feetype}}</td>
-                    <td>{{customer.payment|intcomma}}</td>
-                    <td>{{customer.created_at|date}}</td>
+                    <td><a href="{{member.get_absolute_url}}">{{member.name}}</a></td>
+                    <td>{{member.simu}}</td>
+                    <td>{{member.mahali_kuzaliwa}}</td>
+                    <td>{{member.jinsia}}</td>
                     
+                    <td><a class="btn btn-sm btn-info" href="{{member.get_absolute_url}}">View</a></td>
                 </tr>
                 {% endfor %}
         </table>

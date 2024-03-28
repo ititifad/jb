@@ -11,10 +11,14 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
+from import_export.formats.base_formats import CSV, XLSX
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
+IMPORT_FORMATS = [CSV, XLSX]
+
+EXPORT_FORMATS = [CSV, XLSX]
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -25,7 +29,7 @@ SECRET_KEY = 'django-insecure-&dgohiudxsvrnt&_%q*gc=pu$_6lo##4cgiq!la26+r(m*tqs-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['eagt-nyankumbu.herokuapp.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -41,11 +45,13 @@ INSTALLED_APPS = [
     'core',
     'member',
     'crispy_forms',
-    'storages',
+    'import_export',
+    
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -138,13 +144,14 @@ LOGIN_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-AWS_ACCESS_KEY_ID="AKIAUEL6PRDAX7FOPTM2"
-AWS_SECRET_ACCESS_KEY="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"
-AWS_STORAGE_BUCKET_NAME="misosi-files"
+# AWS_ACCESS_KEY_ID="AKIAUEL6PRDAX7FOPTM2"
+# AWS_SECRET_ACCESS_KEY="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"
+# AWS_STORAGE_BUCKET_NAME="misosi-files"
 
-AWS_S3_FILE_OVERWRITE = False
-AWS_DEFAULT_ACL = None
+# AWS_S3_FILE_OVERWRITE = False
+# AWS_DEFAULT_ACL = None
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"

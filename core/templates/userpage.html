@@ -3,156 +3,115 @@
 {% load humanize %}
 {% block content %}
 
-<div class="container">
-    <!-- {% for message in messages %}
-        <p id="messages">{{message}}</p>
-    {% endfor %} -->
+<div class="container mt-5">
+    <h1>Welcome {{ member.get_full_name }}</h1>
+<!-- Overall totals -->
+<div class="row">
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total zaka Payment</h5>
+                <p class="card-text">{{ total_zaka_payment }}</p>
+            </div>
+        </div>
     </div>
-    <br>
-    <div class="container-fluid">
-        
-    
-        <!-- Page Heading -->
-
-    
-        <!-- Content Row -->
-        <div class="row">
-    
-            <!-- Earnings (Monthly) Card Example -->
-    
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-6 col-md-6 mb-4">
-                <div class="card border-left-success shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
-                                    </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{member_name}}</div>
-                            </div>
-                            <div class="col-auto">
-                                <!-- <i class="fas fa-dollar-sign fa-2x text-gray-300"></i> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Offerings Amount</h5>
+                <p class="card-text">{{ overall_total_amount }}</p>
             </div>
-    
-
-    
-            <!-- Earnings (Monthly) Card Example -->
-            <div class="col-xl-6 col-md-6 mb-4">
-                <div class="card border-left-info shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Total Payments
-                                </div>
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col-auto">
-                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">Tsh {{ paid_fees|intcomma}}</div>
-                                    </div>
-                                    <!-- <div class="col">
-                                        <div class="progress progress-sm mr-2">
-                                            <div class="progress-bar bg-info" role="progressbar"
-                                                style="width: 50%" aria-valuenow="50" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
-                                        </div>
-                                    </div> -->
-                                </div>
-                            </div>
-                            <div class="col-auto">
-                                <!-- <i class="fas fa-clipboard-list fa-2x text-gray-300"></i> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total Offerings Payments</h5>
+                <p class="card-text">{{ overall_total_payment }}</p>
             </div>
-    
-            <!-- Pending Requests Card Example -->
-            <!-- <div class="col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-warning shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                                    Remaining Fee</div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">Tsh {{  balance_fees|intcomma }}</div>
-                            </div>
-                            <div class="col-auto"> -->
-                                <!-- <i class="fas fa-comments fa-2x text-gray-300"></i> -->
-                            <!-- </div>
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Total offerings Remaining</h5>
+                <p class="card-text">{{ overall_total_remaining }}</p>
             </div>
-        </div> -->
+        </div>
+    </div>
+</div>
+    <!-- Tabs for offerings -->
     <hr>
-        <!-- Content Row -->
+    <ul class="nav nav-tabs nav-justified" id="myTab" role="tablist">
+        {% for offering in offerings %}
+            <li class="nav-item">
+                <a class="nav-link {% if forloop.first %}active{% endif %}" id="tab{{ offering.id }}-tab" data-toggle="tab" href="#tab{{ offering.id }}" role="tab" aria-controls="tab{{ offering.id }}" aria-selected="true">{{ offering.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Tab panes for offerings -->
+    <div class="tab-content" id="myTabContent">
+        {% for offering in offerings %}
+            <div class="tab-pane fade {% if forloop.first %}show active{% endif %}" id="tab{{ offering.id }}" role="tabpanel" aria-labelledby="tab{{ offering.id }}-tab">
+                <h2>{{ offering.name }}</h2>
+                <p>Description: {{ offering.description }}</p>
+                <p>Amount: {{ offering.amount }}</p>
+                <p>Total Paid: {{ offering.total_paid }}</p>
+                <p>Remaining Amount: {{ offering.remaining_amount }}</p>
+            </div>
+        {% endfor %}
     </div>
-    <div class="container">
-        <h2 style="text-align: center;" class="font-weight-bold">Offerings Records</h2>
-    <br>
-    
-    <div class="row">
-        <div class="col-lg-12">
-        <div class="card shadow mb-4">
-        <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered text-dark" id="dataTable" width="100%" cellspacing="0">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Offering</th>
-                    <th>Total Payment</th>
-                    <th>Date Paid</th>
-                </tr>
-    
-                {% for customer in payments %}
-    
-                <tr>
-                    <article class="media content-section">
-                        <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
-                        <div class="media-body">
-                            <td>{{customer.id}}</td>
-                    
-                            <td>{{customer.member}}</td>
-                            <td>{{customer.feetype}}</td>
-                            <td>{{customer.payment|intcomma}}</td>
-                            <td>{{customer.created_at|date}}</td>
-                </tr>
+
+    <!-- Total zaka payment -->
+    <!-- Table for all payments -->
+    <h2>All Payments</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Offering</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if payments %}
+                {% for payment in payments %}
+                    <tr>
+                        <td>{{ payment.created_at }}</td>
+                        <td>{{ payment.offering.name }}</td>
+                        <td>{{ payment.payment }}</td>
+                    </tr>
                 {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3">No payments found</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+<br>
+    <!-- Table for zaka payments -->
+    <h2>Zaka Payments</h2>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for zaka_payment in member.zakas.all %}
+                <tr>
+                    <td>{{ zaka_payment.created_at }}</td>
+                    <td>{{ zaka_payment.payment }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     
-            </table>
-        </div>
-    </div>
-    </div>
-    </div>
-    </div>
-    
-    <br>
-    <hr>
-    
-    
-    
-    <!--
-    
-    <br>
-    <div class="row">
-        <div class="col">
-            <div class="card card-body">
-                <form method="get">
-                  {{myFilter.form}}
-                <button class="btn btn-primary" type="submit">Search</button>
-              </form>
-            </div>
-        </div>
-        
-    </div>-->
-    
-    
-    
-        <!--  -->
+</div>
 
 
 {% endblock %}
