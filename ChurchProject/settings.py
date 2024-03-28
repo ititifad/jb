@@ -144,14 +144,5 @@ LOGIN_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# AWS_ACCESS_KEY_ID="AKIAUEL6PRDAX7FOPTM2"
-# AWS_SECRET_ACCESS_KEY="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"
-# AWS_STORAGE_BUCKET_NAME="misosi-files"
 
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = None
-
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# django_heroku.settings(locals())
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
